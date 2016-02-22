@@ -31,13 +31,14 @@ var CouponRecorder = function(initParams){
 
 		//注册事件的响应函数
 		chrome.tabs.onUpdated.addListener(_insertFunc);
-
+		localStorage.recordStatus = "on";
 		_isRecord = true;
 	};
 
 	this.stop = function(){
 		if(_isRecord == false) return;
 		chrome.tabs.onUpdated.removeListener(_insertFunc);
+		localStorage.recordStatus = "off";
 		_isRecord = false;
 	};
 
@@ -94,3 +95,6 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
 	} 
 });
 
+//恢复上次的状态
+if(localStorage.recordStatus == "on")
+	cr.start();
