@@ -85,16 +85,25 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
 		case 'stop': 
 			cr.stop();
 			sendResponse({status: cr.isRecord});
-			break;   
+			break;
 		case 'log': 
 			cr.log(message.params, function(result){
 				console.log(result);
 				//sendResponse({"status": (result=="success")});//如果异步的话，执行到这里的时候，已经发不回去了，可能是超时丢弃了。
 			})
-			break;   
+			break;
+		case 'getLocalStorage': 
+			sendResponse(localStorage.getItem(message.key));
+			break;
+		case 'setLocalStorage': 
+			localStorage.setItem(message.key, message.value);
+			break;
 	} 
 });
 
 //恢复上次的状态
-if(localStorage.recordStatus == "on")
+if(localStorage.recordStatus == "on"){
 	cr.start();
+	chrome.browserAction.setBadgeBackgroundColor({color: '#FF0000'});
+	chrome.browserAction.setBadgeText({text: 'on'});
+}

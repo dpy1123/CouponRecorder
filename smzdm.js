@@ -1,4 +1,4 @@
-function insertCRFunc(){
+function insertCRFunc(userId){
 	
 	function getItemId(text){//从text中提取itemId
 		var itemId = NaN;
@@ -15,7 +15,7 @@ function insertCRFunc(){
 		var url = this.href;//http://www.smzdm.com/p/6016706/
 		var itemId = getItemId(url);
 		if(!isNaN(itemId)){
-			sendUserAction(null, itemId, 'view', 'smzdm');
+			sendUserAction(userId, itemId, 'view', 'smzdm');
 		} 
 	}).on('mouseover', 'div.list > div.listTitle > h4 > a' , function(){
 		//console.log('hover')
@@ -27,7 +27,7 @@ function insertCRFunc(){
 			popup.style.cursor = 'pointer';
 			popup.innerText = 'dislike';
 			popup.onclick = function(){
-				sendUserAction(null, itemId, 'dislike', 'smzdm');
+				sendUserAction(userId, itemId, 'dislike', 'smzdm');
 				$(this).remove();
 			}
 			$(this).parent().append(popup);
@@ -39,7 +39,7 @@ function insertCRFunc(){
 		var url = this.href;//http://www.smzdm.com/p/6016706/
 		var itemId = getItemId(url);
 		if(!isNaN(itemId)){
-			sendUserAction(null, itemId, 'view', 'smzdm');
+			sendUserAction(userId, itemId, 'view', 'smzdm');
 		}
 	});
 	
@@ -49,27 +49,28 @@ function insertCRFunc(){
 		var url = $(this).parents('div.list').attr('articleid');//"3_6017116"
 		var itemId = getItemId(url);
 		if(!isNaN(itemId)){
-			sendUserAction(null, itemId, 'buy', 'smzdm');
+			sendUserAction(userId, itemId, 'buy', 'smzdm');
 		}
 	});
 	
 
 	$('body > section > div.leftWrap > article > div.article-top-box.clearfix > div.article-right > div.clearfix > div > a').on('click', function(){
 		var itemId = $('#articleID').val();
-		sendUserAction(null, itemId, 'buy', 'smzdm');
+		sendUserAction(userId, itemId, 'buy', 'smzdm');
 	});
 
 }
 
 function sendUserAction(userId, itemId, action, site){
-	var userId = userId || localStorage.userId;
-	if(typeof userId == "undefined"){
+	//var userId = userId || localStorage.userId;//这里的localStorage是在content_script注入页的域下的，bg和option页中的localStorage是在chrome扩展下的，无法跨域访问
+	if(userId == null){
 		var newId = window.prompt("请输入用户名", "userId");
 		if(newId == null || newId == "userId"){
 			alert('请右键本扩展，在选项中设置userId！');
 			return;
 		}else{
-			localStorage.userId = newId;
+			//localStorage.userId = newId;
+			setLocalStorage('userId', newId);
 		}
 	}
 	//alert(action+': [userId: '+userId+', itemId: '+itemId+']');
@@ -79,10 +80,23 @@ function sendUserAction(userId, itemId, action, site){
 	)
 }
 
+function getLocalStorage(key, callback){
+	chrome.runtime.sendMessage({"method": "getLocalStorage", "key": key}, function(response){
+			callback(response);
+		}
+	)
+}
+
+function setLocalStorage(key, value){
+	chrome.runtime.sendMessage({"method": "setLocalStorage", "key": key, "value": value})
+}
+
 
 //document.addEventListener('readystatechange', function(){
 	//if(document.readyState == "complete"){ //当页面加载状态为完全结束时进入 
 		console.log('inject');
-		insertCRFunc();
+		getLocalStorage('userId', function(value){
+			insertCRFunc(value);
+		})
 	//} 
 //});
