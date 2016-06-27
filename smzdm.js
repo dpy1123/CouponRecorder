@@ -53,8 +53,8 @@ function insertCRFunc(userId){
 		}
 	});
 	
-
-	$('body > section > div.leftWrap > article > div.article-top-box.clearfix > div.article-right > div.clearfix > div > a').on('click', function(){
+	//详情页中的购买按钮
+	$('body > section > div.leftWrap > article > div > div.article-right > div > div > div > a').on('click', function(){
 		var itemId = $('#articleID').val();
 		sendUserAction(userId, itemId, 'buy', 'smzdm');
 	});
