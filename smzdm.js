@@ -11,13 +11,13 @@ function insertCRFunc(userId){
 
 
 	//因为list元素会随着浏览动态添加，因此使用on绑定事件
-	$('body > section > div.leftWrap').on('click', 'div.list > div.listTitle > h4 > a', function(){
+	$('#feed-main > div.feed-main-con').on('click', 'ul#feed-main-list > li > h5 > a', function(){
 		var url = this.href;//http://www.smzdm.com/p/6016706/
 		var itemId = getItemId(url);
 		if(!isNaN(itemId)){
 			sendUserAction(userId, itemId, 'view', 'smzdm');
 		} 
-	}).on('mouseover', 'div.list > div.listTitle > h4 > a' , function(){
+	}).on('mouseover', 'ul#feed-main-list > li > h5 > a' , function(){
 		//console.log('hover')
 		var itemId = getItemId(this.href);
 		if($('#popup_'+itemId).length == 0){//只append一次
@@ -35,8 +35,8 @@ function insertCRFunc(userId){
 	});
 
 	
-	$('body > section > div.leftWrap').on('click', 'div.list > a.picLeft', function(){
-		var url = this.href;//http://www.smzdm.com/p/6016706/
+	$('#feed-main > div.feed-main-con').on('click', 'ul#feed-main-list > li > div.z-feed-img > img', function(){
+		var url = $(this).parent().attr('href');//http://www.smzdm.com/p/6016706/
 		var itemId = getItemId(url);
 		if(!isNaN(itemId)){
 			sendUserAction(userId, itemId, 'view', 'smzdm');
@@ -45,8 +45,8 @@ function insertCRFunc(userId){
 	
 
 	
-	$('body > section > div.leftWrap').on('click', 'div.list > div.listRight > div.lrBot > div.botPart > div.buy > a', function(){
-		var url = $(this).parents('div.list').attr('articleid');//"3_6017116"
+	$('#feed-main > div.feed-main-con').on('click', 'ul#feed-main-list > li > div.feed-link-btn > a', function(){
+		var url = $(this).parents('li').attr('articleid');//"3_6017116"
 		var itemId = getItemId(url);
 		if(!isNaN(itemId)){
 			sendUserAction(userId, itemId, 'buy', 'smzdm');
@@ -55,7 +55,7 @@ function insertCRFunc(userId){
 	
 	//详情页中的购买按钮
 	$('body > section > div.leftWrap > article > div > div.article-right > div > div > div > a').on('click', function(){
-		var itemId = $('#articleID').val();
+		var itemId = $('#rewardOptions').attr('data-articleid');
 		sendUserAction(userId, itemId, 'buy', 'smzdm');
 	});
 
