@@ -65,7 +65,7 @@ var CouponRecorder = function(initParams){
 	this.log = function(params, callback){		
 		var url = _logUrl+"?user="+params.userId+"&article_id="+params.itemId+"&action="+params.action+"&site="+params.site;
 		_httpGet(url, function(data){
-			callback(data);
+			callback(JSON.parse(data));
 		});
 	};
 
@@ -89,9 +89,10 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
 		case 'log': 
 			cr.log(message.params, function(result){
 				console.log(result);
-				//sendResponse({"status": (result=="success")});//如果异步的话，执行到这里的时候，已经发不回去了，可能是超时丢弃了。
+				sendResponse({"status": (result=="success")});
 			})
-			break;
+			return true;//chrome.runtime.onMessage.addListener:This function becomes invalid when the event listener returns, unless you return true from the event listener to indicate you wish to send a response asynchronously (this will keep the message channel open to the other end until sendResponse is called).
+			//So just add "return true;" to indicate that you'll call the response function asynchronously.
 		case 'getLocalStorage': 
 			sendResponse(localStorage.getItem(message.key));
 			break;
