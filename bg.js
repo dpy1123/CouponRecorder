@@ -1,7 +1,7 @@
 var CouponRecorder = function(initParams){
 	var _isRecord = false,
 		_watchUrls = ['smzdm.com'],
-		_logUrl = 'http://devgo.top/coupon_recorder/v1/view_log/log',
+		_logUrl = 'http://promotion.devgo.top/coupon_recorder/v1/view_log/log',
 		_version = "0.1";
 	
 	Object.defineProperties(this, {
