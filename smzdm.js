@@ -11,8 +11,8 @@ function insertCRFunc(userId){
 
 
 	//因为list元素会随着浏览动态添加，因此使用on绑定事件
-	$('#feed-main > div.feed-main-con').on('click', 'ul#feed-main-list > li > h5 > a', function(){
-		var url = this.href;//http://www.smzdm.com/p/6016706/
+	$('#feed-main > div.feed-main-con').on('click', 'ul#feed-main-list>li>h5, ul#feed-main-list>li>div>div.z-feed-img', function(){
+		var url = $(this).parents('li').attr('articleid');//"3_6017116"
 		var itemId = getItemId(url);
 		if(!isNaN(itemId)){
 			sendUserAction(userId, itemId, 'view', 'smzdm');
@@ -32,20 +32,7 @@ function insertCRFunc(userId){
 			}
 			$(this).parent().append(popup);
 		}
-	});
-
-	
-	$('#feed-main > div.feed-main-con').on('click', 'ul#feed-main-list > li > div.z-feed-img > img', function(){
-		var url = $(this).parent().attr('href');//http://www.smzdm.com/p/6016706/
-		var itemId = getItemId(url);
-		if(!isNaN(itemId)){
-			sendUserAction(userId, itemId, 'view', 'smzdm');
-		}
-	});
-	
-
-	
-	$('#feed-main > div.feed-main-con').on('click', 'ul#feed-main-list > li > div.feed-link-btn > a', function(){
+	}).on('click', 'ul#feed-main-list>li a.z-btn', function(){
 		var url = $(this).parents('li').attr('articleid');//"3_6017116"
 		var itemId = getItemId(url);
 		if(!isNaN(itemId)){
