@@ -11,20 +11,24 @@ function insertCRFunc(userId){
 
 
 	//因为list元素会随着浏览动态添加，因此使用on绑定事件
-	$('#feed-main > div.feed-main-con').on('click', 'ul#feed-main-list>li>h5, ul#feed-main-list>li>div>div.z-feed-img', function(){
+	$('#feed-main > div.feed-main-con').on('click', 'ul#feed-main-list>li > div > div.z-feed-content >h5, ul#feed-main-list>li>div>div.z-feed-img', function(){
 		var url = $(this).parents('li').attr('articleid');//"3_6017116"
 		var itemId = getItemId(url);
 		if(!isNaN(itemId)){
 			sendUserAction(userId, itemId, 'view', 'smzdm');
 		} 
-	}).on('mouseover', 'ul#feed-main-list > li > h5 > a' , function(){
+	}).on('mouseover', 'ul#feed-main-list > li > div > div.z-feed-content > h5 > a' , function(){
 		//console.log('hover')
 		var itemId = getItemId(this.href);
 		if($('#popup_'+itemId).length == 0){//只append一次
 			var popup = document.createElement("span");
 			popup.id = 'popup_'+itemId;
-			popup.style.float = 'right';
 			popup.style.cursor = 'pointer';
+			popup.style.zIndex = '1';
+			popup.style.position = 'absolute';
+			popup.style.right = '0';
+			popup.style.color = 'silver';
+			popup.style.backgroundColor = 'white';
 			popup.innerText = 'dislike';
 			popup.onclick = function(){
 				sendUserAction(userId, itemId, 'dislike', 'smzdm');
@@ -41,7 +45,7 @@ function insertCRFunc(userId){
 	});
 	
 	//详情页中的购买按钮
-	$('body > section > div.leftWrap > article > div > div.article-right > div > div > div > a').on('click', function(){
+	$('#feed-main > div > div > div.info-details > div > a').on('click', function(){
 		var itemId = $('#rewardOptions').attr('data-articleid');
 		sendUserAction(userId, itemId, 'buy', 'smzdm');
 	});

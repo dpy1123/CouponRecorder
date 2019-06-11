@@ -5,7 +5,7 @@
 目前记录"view"、"buy"、"dislike"这几个动作。  
 
 # 使用
-直接把dist文件夹中的crx文件拖拽到chrome中即可安装。  
+从[Chrome商店](https://chrome.google.com/webstore/detail/couponrecorder/jgffbmndnniciglfoalbgphnolkkomgf)安装。  
 安装好后，在右上角应该会有C字样的图标，单击"on"即可开启。  
 在smzdm精选频道页，点击每条推荐信息的标题和图标，会打开详情页，同时记录"view"；  
 点击直达购买链接，或在详情页点击购买链接，会跳转到购买链接，同时记录"buy"；  
